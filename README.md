@@ -1,2 +1,2 @@
 # quartz
-Quartz is a library designed cost benefit analysis
+Quartz is a library designed for cost benefit analysis

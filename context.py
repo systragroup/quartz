@@ -1,6 +1,9 @@
 import pandas as pd
+import os
 
-data = pd.read_excel('data.xlsx', sheet_name=None, index_col=[0, 1])
+folder = os.path.dirname(__file__)
+data = pd.read_excel(folder + r'/data/data.xlsx', sheet_name=None, index_col=[0, 1])
+
 data = {key: value.reset_index(0, drop=True) for key, value in data.items()}
 #data = {key: value.T.interpolate().T for key, value in data.items()}
 xdr = data['xdr_per_unit']

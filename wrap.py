@@ -1,9 +1,11 @@
 from quartz.evolution import Extrapolater
 from quartz.context import Contextualizer
+from quartz.io.exporter import save_color_sheet, styles
 from copy import deepcopy
 
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
 
 
 def read_excel(path):
@@ -131,6 +133,23 @@ class Tim(Extrapolater, Contextualizer):
         main = pd.concat([a,b, c])
 
         return main
+
+    def to_excel(self, filepath ,styles=styles):
+        to_excel_dict = {}
+        for name, df in self.__dict__.items():
+            if isinstance(df, pd.DataFrame) or isinstance(df, pd.Series):
+                if 'ts' in name[:2]:
+                    to_excel_dict[name] = df.T
+                else:
+                    to_excel_dict[name] = df   
+
+            
+        with pd.ExcelWriter(filepath, engine='xlsxwriter') as writer:
+            for sheet, style in tqdm(styles.items()):
+                try:
+                    save_color_sheet(to_excel_dict[sheet], writer, name=sheet, **style)
+                except KeyError: 
+                    pass
 
 
 

@@ -15,7 +15,7 @@ for sheet in ['ts_capex', 'ts_opex','ts_cba', 'ts_costs','ts_evolution', 'ts', '
 for sheet in ['xdr_per_unit', 'inflation', 'consumer_price', 'gdp']:
     styles[sheet] = {'color': '#C6A5BE', 'width':5}
 
-styles['tests'] = {'color': '#D0809B', 'width':20}
+styles['test_summaries'] = {'color': '#D0809B', 'width':20}
 
 
 

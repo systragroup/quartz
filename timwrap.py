@@ -121,13 +121,23 @@ class TimWrap(Extrapolater, Contextualizer):
 
         return main
 
+    def build_safety(self):
+        ts = self.ts
+        safety_columns = ts['safety'].columns
+        for mode in ts['death'].columns:
+            self.ts_costs[('safety', mode)] = (
+                self.ts_costs['safety'] * self.ts[safety_columns].swaplevel(axis=1)[mode]
+            ).T.sum() 
+            
+            if (self.var.loc['death']['by'] == 'Mkm' ).all():
+                self.ts_costs[('safety', mode)] /= 1e6
+
     def build_climate_change(self):
 
         ts = self.ts
-        prop = ts[('proportion_diesel', 'car')]
-
         for cost in ['carbon', 'fuel']:
             for mode in (self.ts['proportion_diesel'].columns):
+                prop = ts[('proportion_diesel', mode)]
                 mix = prop * ts[(cost,'diesel')] + (1-prop) * ts[(cost,'gasoline')]
                 ts[(cost, mode)] = mix 
 
@@ -174,7 +184,8 @@ class TimWrap(Extrapolater, Contextualizer):
         
         # find the costs and externalities that are related to vehicle km
         km_costs = self.costs.loc[self.costs['unit'] == 'km']
-        km_cost_categories = list(set(km_costs.reset_index()['category'])) + ['climate_change', 'fuel']
+        km_cost_categories = list(set(km_costs.reset_index()['category'])) + [
+            'climate_change', 'fuel', 'safety']
         # km_cost_categories = ['noise', 'local_pollution'] for example
         
         # compute vehicle_km related externalities
@@ -279,7 +290,16 @@ class TimWrap(Extrapolater, Contextualizer):
         self.build_contextualized_costs()
         self.build_ts_costs()
         self.build_time_series()
+        self.build_safety()
         self.build_climate_change()
+
+        #TODO : remove that, move to build_safety and build_climate_change
+        self.ts = pd.concat([self.ts_costs, self.ts], axis=1)
+        df = self.ts.T
+        df= df.loc[~df.index.duplicated(keep='first')]
+        self.ts = df.T
+
+
         self.build_ts_delta()
         self.build_ts_benefits(*args, **kwargs)
         self.set_scenarios()

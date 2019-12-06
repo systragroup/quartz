@@ -13,7 +13,7 @@ class TimPlot(TimWrap):
 
         self.ts['year'] = self.ts.index
         self.ts['discount'] = np.power(
-            1 + -self.evolution['value']['discount_rate'], self.ts['year']- self.first_year)
+            1 + self.evolution['value']['discount_rate'], self.first_year-self.ts['year'])
         
         self.ts_discounted_cba = self.ts_cba.apply(lambda s: s*self.ts['discount'])
         self.ts_aggregated_discounted_cba = self.ts_discounted_cba.T.groupby(

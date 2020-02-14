@@ -50,7 +50,7 @@ class TimPlot(TimWrap):
         plt.rcParams['font.size'] = 12
         plot = discounted_sum.plot(figsize=[12, 5], color=rainbow_shades, linewidth=2)
         plot.axhline(0, color='grey', linewidth=1, linestyle='dotted')
-        plot.set_title('discounted benefits')
+        plot.set_title('Beneficios con descuento')
         plot.set_ylabel(unit + self.currency)
 
         if filepath:
@@ -66,7 +66,7 @@ class TimPlot(TimWrap):
         
         plot = discounted_sum.cumsum().plot(figsize=[12, 5], color=rainbow_shades, linewidth=2)
         plot.axhline(0, color='grey', linewidth=1, linestyle='dotted')
-        plot.set_title('cumulated discounted benefits')
+        plot.set_title('Beneficios acumuladas con descuento')
         plot.set_ylabel(unit + self.currency)
         
         if filepath:
@@ -80,7 +80,7 @@ class TimPlot(TimWrap):
         df[['expenditures']].plot(kind='bar', color='red', ax=plot, rot=90)
         df[['cumsum']].plot(rot=90, color='grey',ax=plot)
         plot.set_ylabel(unit + self.currency)
-        plot.set_title('discounted benefits and expenditures, by year and cumulative')
+        plot.set_title('Beneficios y gastos con descuento, por año y cumulate')
         if filepath:
             plot.get_figure().savefig(filepath, bbox_inches='tight')
         return plot
@@ -93,7 +93,7 @@ class TimPlot(TimWrap):
         df[['expenditures']].plot(kind='bar', color='red', ax=plot, rot=90)
         df[['delta']].plot(rot=90, color='black', ax=plot)
         plot.axhline(0, color='grey', linewidth=0.5)
-        plot.set_title('discounted benefits and expenditures')
+        plot.set_title('Beneficios y gastos con descuento')
         plot.set_ylabel(unit + self.currency)
         if filepath:
             plot.get_figure().savefig(filepath, bbox_inches='tight')
@@ -105,7 +105,7 @@ class TimPlot(TimWrap):
         if unit == 'M':
             sums /= 1e6
         plot = sums.cumsum().plot(kind='area', figsize=[12, 5], stacked=True, color=color)
-        plot.set_title('discounted benefits by category (cumulative sum)')
+        plot.set_title('Beneficios con descuento por categoria (suma acumulativa)')
         plot.set_ylabel(unit + self.currency)
         if filepath:
             plot.get_figure().savefig(filepath, bbox_inches='tight')
@@ -118,7 +118,7 @@ class TimPlot(TimWrap):
         if unit == 'M':
             sums /= 1e6
         plot = sums.plot(kind='bar', figsize=[12, 5], stacked=True, color=color)
-        plot.set_title('discounted benefits by category (summed by year)')
+        plot.set_title('Beneficios con descuento por categoria (sumados por año)')
         plot.set_ylabel(unit + self.currency)
         if filepath:
             plot.get_figure().savefig(filepath, bbox_inches='tight')
@@ -130,7 +130,7 @@ class TimPlot(TimWrap):
         if unit == 'M':
             sums /= 1e6
         plot = sums.plot(kind='line', linewidth=2, figsize=[12, 5], stacked=False, color=color)
-        plot.set_title('discounted benefits by category')
+        plot.set_title('Beneficios con descuento por categoria')
         plot.set_ylabel(unit + self.currency)
         if filepath:
             plot.get_figure().savefig(filepath, bbox_inches='tight')
